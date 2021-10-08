@@ -1,9 +1,14 @@
 package me.spruce.creeperclient.module;
 
 import me.spruce.creeperclient.Client;
+import me.spruce.creeperclient.setting.KeybindSetting;
+import me.spruce.creeperclient.setting.Setting;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public class Module {
 
@@ -13,11 +18,21 @@ public class Module {
 
     public boolean toggled;
 
+    public KeybindSetting keyCode = new KeybindSetting(0);
+    public List<Setting> settings = new ArrayList<Setting>();
+
     public Module(String name, String description, int key, Category c){
         this.name = name;
         this.description = description;
         this.key = key;
         this.category = c;
+        this.keyCode.code = key;
+        addSettings(keyCode);
+    }
+
+    public void addSettings(Setting... settings) {
+        this.settings.addAll(Arrays.asList(settings));
+        this.settings.sort(Comparator.comparingInt(s -> s == keyCode ? 1 : 0));
     }
 
     public void onEnable(){
@@ -90,6 +105,8 @@ public class Module {
     public void setToggled(boolean toggled) {
         this.toggled = toggled;
     }
+
+    public List<Setting> getSettings() { return settings;}
 
     public static ArrayList<Module> getModulesByCategory(Category cat) {
         ArrayList<Module> mods = new ArrayList<Module>();
