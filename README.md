@@ -14,4 +14,4 @@ B: The Person can trick users.
 C: For Modding.
 
 
-Honestly Idk why it would be used for modding but sinse you go the leak look inside the code and remove it
+Honestly Idk why it would be used for modding but sinse you got the leak look inside the code and remove it
