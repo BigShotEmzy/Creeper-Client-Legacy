@@ -3,6 +3,7 @@ package me.spruce.creeperclient.module;
 import me.spruce.creeperclient.Client;
 import me.spruce.creeperclient.setting.KeybindSetting;
 import me.spruce.creeperclient.setting.Setting;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class Module {
 
     public KeybindSetting keyCode = new KeybindSetting(0);
     public List<Setting> settings = new ArrayList<Setting>();
+
+    public static Minecraft mc = Minecraft.getMinecraft();
 
     public Module(String name, String description, int key, Category c){
         this.name = name;

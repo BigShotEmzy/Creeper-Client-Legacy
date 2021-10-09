@@ -1,5 +1,6 @@
 package me.spruce.creeperclient.module;
 
+import me.spruce.creeperclient.module.modules.combat.FastBow;
 import me.spruce.creeperclient.module.modules.hud.Arraylist;
 import me.spruce.creeperclient.module.modules.hud.ClickGUI;
 import me.spruce.creeperclient.module.modules.hud.Watermark;
@@ -8,6 +9,7 @@ import me.spruce.creeperclient.module.modules.movement.Step;
 import me.spruce.creeperclient.module.modules.render.ChestESP;
 import me.spruce.creeperclient.module.modules.render.Fullbright;
 import me.spruce.creeperclient.module.modules.world.NoWeather;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -23,6 +25,9 @@ public class ModuleManager {
 
     public ModuleManager(){
         modules = new CopyOnWriteArrayList<>();
+
+        // COMBAT
+        modules.add(new FastBow());
 
         // MOVEMENT
         modules.add(new Sprint());
@@ -58,18 +63,22 @@ public class ModuleManager {
 
     @SubscribeEvent
     public void onTick(TickEvent.ClientTickEvent event){
-        for(Module m : modules){
-            if(m.toggled){
-                m.update();
+        if(Minecraft.getMinecraft().world != null) {
+            for (Module m : modules) {
+                if (m.toggled) {
+                    m.update();
+                }
             }
         }
     }
 
     @SubscribeEvent
     public void render(RenderWorldLastEvent event){
-        for(Module m : modules){
-            if(m.toggled){
-                m.render();
+        if(Minecraft.getMinecraft().world != null) {
+            for (Module m : modules) {
+                if (m.toggled) {
+                    m.render();
+                }
             }
         }
     }
