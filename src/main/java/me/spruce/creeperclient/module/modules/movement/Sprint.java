@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class Sprint extends Module {
 
-    public ModeSetting mode = new ModeSetting("Mode:", "Legit", "Legit", "Rage");
+    public ModeSetting mode = new ModeSetting("Mode", "Legit", "Legit", "Rage");
 
     public Sprint() {
         super("Sprint", "Makes the player sprint automatically.", Keyboard.KEY_J, Category.MOVEMENT);
