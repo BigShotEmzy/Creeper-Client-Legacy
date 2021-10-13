@@ -34,8 +34,8 @@ public class NumberBox {
 		Gui.drawRect(x + 73, y + 1, x + 83, y + 12, 0xff000000);
 		FontUtil.normal.drawString("-", x + 74, y + 2, -1);
 
-		FontUtil.normal.drawString(option.name, x + 1, y + 1, 0);
-		FontUtil.normal.drawString("" + option.getValue(), x + 64 - FontUtil.normal.getStringWidth("" + option.getValue()), y + 1, 0);
+		FontUtil.normal.drawString(option.name + " : " + option.getValue(), x + 1, y + 1, 0);
+		//FontUtil.normal.drawString("" + option.getValue(), x + 64 - FontUtil.normal.getStringWidth("" + option.getValue()), y + 1, 0x000000);
 	}
 	
 	public void keyTyped(char typedChar, int keyCode) throws IOException {
