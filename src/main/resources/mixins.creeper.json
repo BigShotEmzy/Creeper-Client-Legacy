@@ -2,7 +2,7 @@
   "required": true,
   "compatibilityLevel": "JAVA_8",
   "package": "me.spruce.creeperclient.mixin.mixins",
-  "refmap": "mixins.example.refmap.json",
+  "refmap": "mixins.creeper.refmap.json",
   "mixins":[
     "MixinGuiMainMenu"
   ]
