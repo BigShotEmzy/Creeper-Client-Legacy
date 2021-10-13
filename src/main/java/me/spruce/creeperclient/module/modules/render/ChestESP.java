@@ -46,9 +46,9 @@ public class ChestESP extends Module {
 
                     if (tile instanceof TileEntityChest) {
                         if (((TileEntityChest) tile).getChestType() == BlockChest.Type.BASIC)
-                            RenderGlobal.drawSelectionBoundingBox(box, 255, 51, 51, 208);
+                            RenderGlobal.drawSelectionBoundingBox(box, 255, 51, 51, 50);
                         else
-                            RenderGlobal.drawSelectionBoundingBox(box, 230, 242, 61, 208);
+                            RenderGlobal.drawSelectionBoundingBox(box, 230, 242, 61, 50);
 
                         GlStateManager.enableDepth();
                         GlStateManager.enableLighting();
@@ -74,7 +74,7 @@ public class ChestESP extends Module {
                     GlStateManager.enableBlend();
                     GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
 
-                    RenderGlobal.drawSelectionBoundingBox(box, 255, 51, 51, 208);
+                    RenderGlobal.drawSelectionBoundingBox(box, 255, 51, 0, 50);
                     GlStateManager.enableDepth();
                     GlStateManager.enableLighting();
                     GL11.glEnable(GL11.GL_TEXTURE_2D);
