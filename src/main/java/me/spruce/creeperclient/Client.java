@@ -7,7 +7,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = "creepr", name = "CreeperClient", version = "0.1")
+@Mod(modid = "creeper", name = "CreeperClient", version = "0.1")
 public class Client {
 
     public static String version = "0.1";
