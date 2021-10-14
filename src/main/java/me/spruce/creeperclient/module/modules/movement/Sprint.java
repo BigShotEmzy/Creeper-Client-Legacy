@@ -30,8 +30,8 @@ public class Sprint extends Module {
     @Override
     public void update() {
         switch (mode.getMode()) {
-            case "Legit": KeyBinding.setKeyBindState(29, true);
-            case "Rage": Minecraft.getMinecraft().player.setSprinting(true);
+            case "Legit": KeyBinding.setKeyBindState(29, true); break;
+            case "Rage": Minecraft.getMinecraft().player.setSprinting(true); break;
         }
     }
 }
