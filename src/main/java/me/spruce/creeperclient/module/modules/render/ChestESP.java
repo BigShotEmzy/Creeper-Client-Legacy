@@ -3,86 +3,106 @@ package me.spruce.creeperclient.module.modules.render;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.setting.BooleanSetting;
-import net.minecraft.block.BlockChest;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
+import net.minecraft.client.renderer.culling.Frustum;
+import net.minecraft.client.renderer.culling.ICamera;
 import net.minecraft.tileentity.TileEntityChest;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.tileentity.TileEntityShulkerBox;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.opengl.GL11;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ChestESP extends Module {
 
     private static Minecraft mc = Minecraft.getMinecraft();
 
     public BooleanSetting chests = new BooleanSetting("Chests", true);
+    public BooleanSetting enderChests = new BooleanSetting("Ender Chests", true);
     public BooleanSetting shulkers = new BooleanSetting("Shulkers", true);
 
-    public ChestESP(){
-        super("ChestESP", "Highlights all chests in render distance.", Keyboard.KEY_NONE, Category.RENDER);
-        addSettings(chests, shulkers);
+    public ChestESP() {
+        super("StorageESP", "Highlights all chests and shulkers in render distance.", Keyboard.KEY_NONE, Category.RENDER);
+        addSettings(chests, enderChests, shulkers);
+    }
+
+    public final List<StorageBlockPos> Storages = new ArrayList<>();
+    private ICamera camera = new Frustum();
+
+    @Override
+    public void update() {
+        Storages.clear();
+
+        mc.world.loadedTileEntityList.forEach(p_Tile ->
+        {
+            if (p_Tile instanceof TileEntityEnderChest && enderChests.enabled)
+                Storages.add(new StorageBlockPos(p_Tile.getPos().getX(), p_Tile.getPos().getY(), p_Tile.getPos().getZ(), StorageType.Ender));
+            else if (p_Tile instanceof TileEntityChest && chests.enabled)
+                Storages.add(new StorageBlockPos(p_Tile.getPos().getX(), p_Tile.getPos().getY(), p_Tile.getPos().getZ(), StorageType.Chest));
+            else if (p_Tile instanceof TileEntityShulkerBox && shulkers.enabled)
+                Storages.add(new StorageBlockPos(p_Tile.getPos().getX(), p_Tile.getPos().getY(), p_Tile.getPos().getZ(), StorageType.Shulker));
+        });
     }
 
     @Override
-    public void render(){
-        Minecraft.getMinecraft().world.loadedTileEntityList.forEach(tile -> {
+    public void render() {
+        if (mc.getRenderManager() == null || mc.getRenderManager().options == null) return;
 
-            if(chests.enabled) {
-                if (tile instanceof TileEntityChest || tile instanceof TileEntityEnderChest) {
-                    AxisAlignedBB box = new AxisAlignedBB(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ(), tile.getPos().getX() + 1, tile.getPos().getY() + 1, tile.getPos().getZ() + 1).offset(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
-                    GlStateManager.pushMatrix();
-                    GlStateManager.disableDepth();
-                    GlStateManager.disableLighting();
-                    GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    GlStateManager.disableCull();
-                    GL11.glEnable(GL11.GL_LINE_SMOOTH);
-                    GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-                    GlStateManager.enableAlpha();
-                    GlStateManager.enableBlend();
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
+        new ArrayList<>(Storages).forEach(p_Pos ->
+        {
+            final AxisAlignedBB bb = new AxisAlignedBB(p_Pos.getX() - mc.getRenderManager().viewerPosX, p_Pos.getY() - mc.getRenderManager().viewerPosY,
+                    p_Pos.getZ() - mc.getRenderManager().viewerPosZ, p_Pos.getX() + 1 - mc.getRenderManager().viewerPosX, p_Pos.getY() + 1 - mc.getRenderManager().viewerPosY,
+                    p_Pos.getZ() + 1 - mc.getRenderManager().viewerPosZ);
 
-                    if (tile instanceof TileEntityChest) {
-                        if (((TileEntityChest) tile).getChestType() == BlockChest.Type.BASIC)
-                            RenderGlobal.drawSelectionBoundingBox(box, 255, 51, 51, 50);
-                        else
-                            RenderGlobal.drawSelectionBoundingBox(box, 230, 242, 61, 50);
+            camera.setPosition(mc.getRenderViewEntity().posX, mc.getRenderViewEntity().posY, mc.getRenderViewEntity().posZ);
 
-                        GlStateManager.enableDepth();
-                        GlStateManager.enableLighting();
-                        GL11.glEnable(GL11.GL_TEXTURE_2D);
-                        GL11.glDisable(GL11.GL_LINE_SMOOTH);
-                        GlStateManager.enableCull();
-                        GlStateManager.popMatrix();
-                    }
+            if (camera.isBoundingBoxInFrustum(new AxisAlignedBB(bb.minX + mc.getRenderManager().viewerPosX, bb.minY + mc.getRenderManager().viewerPosY, bb.minZ + mc.getRenderManager().viewerPosZ,
+                    bb.maxX + mc.getRenderManager().viewerPosX, bb.maxY + mc.getRenderManager().viewerPosY, bb.maxZ + mc.getRenderManager().viewerPosZ))) {
+                GlStateManager.pushMatrix();
+                GlStateManager.disableDepth();
+                GlStateManager.disableBlend();
+                switch (p_Pos.GetType()) {
+                    case Chest:
+                        RenderGlobal.drawBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ, 0.94f, 1.0f, 0f, 0.6f);
+                        break;
+                    case Ender:
+                        RenderGlobal.drawBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ, 0.65f, 0f, 0.93f, 0.6f);
+                        break;
+                    case Shulker:
+                        RenderGlobal.drawBoundingBox(bb.minX, bb.minY, bb.minZ, bb.maxX, bb.maxY, bb.maxZ, 1.0f, 0.0f, 0.59f, 0.6f);
+                        break;
+                    default:
+                        break;
                 }
-            }
-
-            if(shulkers.enabled) {
-                if (tile instanceof TileEntityShulkerBox) {
-                    AxisAlignedBB box = new AxisAlignedBB(tile.getPos().getX(), tile.getPos().getY(), tile.getPos().getZ(), tile.getPos().getX() + 1, tile.getPos().getY() + 1, tile.getPos().getZ() + 1).offset(-mc.getRenderManager().viewerPosX, -mc.getRenderManager().viewerPosY, -mc.getRenderManager().viewerPosZ);
-                    GlStateManager.pushMatrix();
-                    GlStateManager.disableDepth();
-                    GlStateManager.disableLighting();
-                    GL11.glDisable(GL11.GL_TEXTURE_2D);
-                    GlStateManager.disableCull();
-                    GL11.glEnable(GL11.GL_LINE_SMOOTH);
-                    GL11.glHint(GL11.GL_LINE_SMOOTH_HINT, GL11.GL_NICEST);
-                    GlStateManager.enableAlpha();
-                    GlStateManager.enableBlend();
-                    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_DST_ALPHA);
-
-                    RenderGlobal.drawSelectionBoundingBox(box, 255, 51, 0, 50);
-                    GlStateManager.enableDepth();
-                    GlStateManager.enableLighting();
-                    GL11.glEnable(GL11.GL_TEXTURE_2D);
-                    GL11.glDisable(GL11.GL_LINE_SMOOTH);
-                    GlStateManager.enableCull();
-                    GlStateManager.popMatrix();
-                }
+                GlStateManager.enableBlend();
+                GlStateManager.enableDepth();
+                GlStateManager.popMatrix();
             }
         });
+    }
+
+    enum StorageType {
+        Chest,
+        Shulker,
+        Ender,
+    }
+
+    static class StorageBlockPos extends BlockPos {
+        public StorageType Type;
+
+        public StorageBlockPos(int x, int y, int z, StorageType p_Type) {
+            super(x, y, z);
+
+            Type = p_Type;
+        }
+
+        public StorageType GetType() {
+            return Type;
+        }
     }
 }
