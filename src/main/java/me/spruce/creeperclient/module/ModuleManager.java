@@ -6,6 +6,7 @@ import me.spruce.creeperclient.module.modules.hud.ClickGUI;
 import me.spruce.creeperclient.module.modules.hud.Watermark;
 import me.spruce.creeperclient.module.modules.movement.Sprint;
 import me.spruce.creeperclient.module.modules.movement.Step;
+import me.spruce.creeperclient.module.modules.render.Cape;
 import me.spruce.creeperclient.module.modules.render.ChestESP;
 import me.spruce.creeperclient.module.modules.render.Fullbright;
 import me.spruce.creeperclient.module.modules.world.NoWeather;
@@ -36,6 +37,7 @@ public class ModuleManager {
         // RENDER
         modules.add(new Fullbright());
         modules.add(new ChestESP());
+        modules.add(new Cape());
 
         // WORLD
         modules.add(new NoWeather());
