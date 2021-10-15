@@ -62,7 +62,7 @@ repositories {
 }
  
 dependencies {
-	compile("org.spongepowered:mixin:0.7.4-SNAPSHOT") {
+	compile("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
 		exclude module: 'launchwrapper'
 		exclude module: 'guava'
 		exclude module: 'gson'
@@ -92,7 +92,7 @@ processResources {
  
 mixin {
 	defaultObfuscationEnv searge
-	add sourceSets.main, 'mixins.example.refmap.json'
+	add sourceSets.main, 'mixins.creeper.refmap.json'
 }
  
 reobf {
@@ -101,18 +101,22 @@ reobf {
 		classpath = sourceSets.main.compileClasspath
 	}
 }
+
+sourceJar {
+	enabled false;
+}
  
 jar {
 	manifest {
-		attributes(
-				'MixinConfigs': 'mixins.example.json',
-				'tweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
+		attributes([
+				'MixinConfigs': 'mixins.creeper.json',
+				'TweakClass': 'org.spongepowered.asm.launch.MixinTweaker',
 				'TweakOrder': 0,
 				'FMLCorePluginContainsFMLMod': 'true',
-				'FMLCorePlugin': 'me.creeper.creeperclient.Example',
+				//'FMLCorePlugin': 'me.spruce.creeperclient.mixin.MixinLoader',
 				'ForceLoadAsMod': 'true',
 				'FMLAT': '***_at.cfg'
-		)
+		])
 	}
 }
  
