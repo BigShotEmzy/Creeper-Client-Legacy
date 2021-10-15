@@ -1,14 +1,14 @@
 [
 {
-  "modid": "creepr",
-  "name": "Creeper Client",
+  "modid": "creeper",
+  "name": "CreeperClient",
   "description": "1.12.2 anarchy client by Spruce#7704",
   "version": "0.1",
   "mcversion": "${mcversion}",
   "url": "",
   "updateUrl": "",
-  "authorList": ["Spruce"],
-  "credits": "Spruce#7704 for programming this client!",
+  "authorList": ["Spruce", "Cephetir"],
+  "credits": "Spruce#7704 and Cephetir#0001 for programming this client!",
   "logoFile": "",
   "screenshots": [],
   "dependencies": []

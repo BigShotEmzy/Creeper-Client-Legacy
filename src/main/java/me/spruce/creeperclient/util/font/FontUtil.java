@@ -26,7 +26,7 @@ public class FontUtil {
                 font = locationMap.get(location).deriveFont(Font.PLAIN, size);
             } else {
                 InputStream is = Minecraft.getMinecraft().getResourceManager()
-                        .getResource(new ResourceLocation("src/main/resources/assets/creeper/font/", location)).getInputStream();
+                        .getResource(new ResourceLocation("creeper/font/" + location)).getInputStream();
                 font = Font.createFont(0, is);
                 locationMap.put(location, font);
                 font = font.deriveFont(Font.PLAIN, size);
@@ -48,8 +48,8 @@ public class FontUtil {
         new Thread(() ->
         {
             Map<String, Font> locationMap = new HashMap<>();
-            normal_ = getFont(locationMap, "Roboto.ttf", 19);
-            normal40_ = getFont(locationMap, "Roboto.ttf", 40);
+            normal_ = getFont(locationMap, "font.ttf", 19);
+            normal40_ = getFont(locationMap, "font.ttf", 40);
             completed++;
         }).start();
         new Thread(() ->
