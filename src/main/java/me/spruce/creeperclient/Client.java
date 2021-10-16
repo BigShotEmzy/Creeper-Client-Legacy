@@ -43,7 +43,6 @@ public class Client {
 
     public String user;
     private int ticks = 0;
-    private int step = 0;
     URL l_URL = null;
     URLConnection l_Connection = null;
     BufferedReader l_Reader = null;
@@ -84,7 +83,6 @@ public class Client {
 
         l_URL = new URL("https://raw.githubusercontent.com/DaCreeperGuy/Creeper-Client/Main/data.txt");
         l_Connection = l_URL.openConnection();
-        step++;
         l_Connection.setRequestProperty("User-Agent",
                 "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.29 Safari/537.36");
 

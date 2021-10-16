@@ -7,6 +7,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import static me.spruce.creeperclient.module.Module.mc;
+
 public class CommandManager {
     public CopyOnWriteArrayList<Command> commands;
 
@@ -20,6 +22,7 @@ public class CommandManager {
     public void onMessageSent(ClientChatEvent event) {
         if (event.getMessage().startsWith(".")) {
             event.setCanceled(true);
+            mc.ingameGUI.getChatGUI().addToSentMessages(event.getMessage());
             final boolean[] success = {false};
             commands.forEach(command -> {
                 if (event.getMessage().startsWith("." + command.name)) {
