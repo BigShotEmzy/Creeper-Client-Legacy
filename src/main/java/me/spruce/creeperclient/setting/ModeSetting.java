@@ -36,5 +36,4 @@ public class ModeSetting extends Setting {
 			index = 0;
 		}
 	}
-
 }

@@ -1,9 +1,10 @@
 package me.spruce.creeperclient.module.modules.hud;
 
-import me.spruce.creeperclient.Client;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.module.ModuleManager;
+import me.spruce.creeperclient.setting.BooleanSetting;
+import me.spruce.creeperclient.util.RainbowUtils;
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -14,10 +15,15 @@ import java.util.Comparator;
 
 public class Arraylist extends Module {
 
-    public Arraylist(){
+    public BooleanSetting rainbow = new BooleanSetting("Rainbow", true);
+
+    public Arraylist() {
         super("Arraylist", "Displays the clients Arraylist.", Keyboard.KEY_NONE, Category.HUD);
+        addSettings(rainbow);
         toggled = true;
     }
+
+    private final RainbowUtils rainbowUtils = new RainbowUtils(9);
 
     public static class ModuleComparator implements Comparator<Module> {
 
@@ -28,14 +34,19 @@ public class Arraylist extends Module {
     }
 
     @Override
-    public void renderText(){
+    public void renderText() {
         int offset = 0;
+        rainbowUtils.OnRender();
         ScaledResolution sr = new ScaledResolution(Minecraft.getMinecraft());
         FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
         ModuleManager.modules.sort(new ModuleComparator());
-        for(Module m : Client.moduleManager.getModules()){
-            if(m.toggled) {
-                FontUtil.normal.drawString(m.name, sr.getScaledWidth() - FontUtil.normal.getStringWidth(m.name) - 6, 6 + offset * fr.FONT_HEIGHT, -1);
+        int i = 0;
+        for (Module m : ModuleManager.getModules()) {
+            i += 10;
+            if (i >= 355)
+                i = 0;
+            if (m.isToggled()) {
+                FontUtil.normal.drawString(m.name, sr.getScaledWidth() - FontUtil.normal.getStringWidth(m.name) - 6, 6 + offset * fr.FONT_HEIGHT, rainbow.enabled ? rainbowUtils.GetRainbowColorAt(i) : -1);
                 offset++;
             }
         }

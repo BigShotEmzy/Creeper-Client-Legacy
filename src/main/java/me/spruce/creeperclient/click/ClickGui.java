@@ -1,15 +1,11 @@
 package me.spruce.creeperclient.click;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-import me.spruce.creeperclient.click.Button;
-import me.spruce.creeperclient.click.Frame;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
-import me.spruce.creeperclient.module.ModuleManager;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class ClickGui extends GuiScreen{
 
@@ -19,7 +15,7 @@ public class ClickGui extends GuiScreen{
         frames = new ArrayList<>();
         int offset = 0;
         for(Category c : Category.values()) {
-            Frame frame = new Frame(c.name(), 10 + offset, 20, 100, 16);
+            Frame frame = new Frame(c.name(), 10 + offset, 20, 100, 13);
             for(Module m : Module.getModulesByCategory(c)) {
                 Button button = new Button(frame, m);
                 frame.buttons.add(button);

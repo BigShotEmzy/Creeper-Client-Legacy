@@ -1,8 +1,5 @@
 package me.spruce.creeperclient.click;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import me.spruce.creeperclient.click.component.CheckBox;
 import me.spruce.creeperclient.click.component.ModeBox;
 import me.spruce.creeperclient.click.component.NumberBox;
@@ -16,6 +13,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 
+import java.awt.*;
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class Button {
 
     public Frame parent;
@@ -23,11 +24,11 @@ public class Button {
     public int offset;
     private boolean settingsOpen = false;
 
-    private static FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
-    private static Minecraft mc = Minecraft.getMinecraft();
-    private ArrayList<CheckBox> checkBoxSettings = new ArrayList<>();
-    private ArrayList<ModeBox> modeBoxSettings = new ArrayList<>();
-    private ArrayList<NumberBox> numberBoxSettings = new ArrayList<>();
+    private static final FontRenderer fr = Minecraft.getMinecraft().fontRenderer;
+    private static final Minecraft mc = Minecraft.getMinecraft();
+    private final ArrayList<CheckBox> checkBoxSettings = new ArrayList<>();
+    private final ArrayList<ModeBox> modeBoxSettings = new ArrayList<>();
+    private final ArrayList<NumberBox> numberBoxSettings = new ArrayList<>();
 
     public Button(Frame parent, Module module) {
         this.parent = parent;
@@ -77,13 +78,14 @@ public class Button {
         }
         int rectY1Offset = parent.y + offset;
         int rectY2Offset = parent.y + offset + parent.barheight;
-        int fontYOffset = parent.y + offset + 6;
+        int fontYOffset = parent.y + offset + 3;
 
-        Gui.drawRect(parent.x, rectY1Offset, parent.x + parent.width, rectY2Offset, module.toggled ? 0x90b0e5ff : 0x80010101);
-        FontUtil.normal.drawStringWithShadow(module.getName(), parent.x + 2, fontYOffset, module.toggled ? 1 : -1);
+        int color = module.toggled ? new Color(205, 148, 255, 203).getRGB() : new Color(171, 86, 255, 203).getRGB();
+        Gui.drawRect(parent.x, rectY1Offset, parent.x + parent.width, rectY2Offset, color);
+        FontUtil.normal.drawString(module.getName(), parent.x + 2, fontYOffset, module.toggled ? new Color(42, 42, 42, 255).getRGB() : -1);
 
         if(settingsOpen) {
-            Gui.drawRect(parent.x, rectY1Offset + parent.barheight, parent.x + parent.width, rectY2Offset + settingOffset, 0x9068ada5);
+            Gui.drawRect(parent.x, rectY1Offset + parent.barheight, parent.x + parent.width, rectY2Offset + settingOffset, color);
             for (CheckBox cbx : checkBoxSettings) {
                 cbx.drawScreen(mouseX, mouseY, partialTicks, 0);
             }
@@ -150,11 +152,6 @@ public class Button {
     }
 
     public boolean bounding(int mouseX, int mouseY) {
-        if (mouseX >= this.parent.x && mouseX <= this.parent.x + this.parent.width && mouseY >= this.parent.y + offset
-                && mouseY <= this.parent.y + offset + this.parent.barheight) {
-            return true;
-        } else {
-            return false;
-        }
+        return mouseX >= this.parent.x && mouseX <= this.parent.x + this.parent.width && mouseY >= this.parent.y + offset && mouseY <= this.parent.y + offset + this.parent.barheight;
     }
 }

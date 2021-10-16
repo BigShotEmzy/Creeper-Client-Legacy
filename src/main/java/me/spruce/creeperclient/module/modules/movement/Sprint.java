@@ -3,14 +3,9 @@ package me.spruce.creeperclient.module.modules.movement;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.setting.ModeSetting;
-import me.spruce.creeperclient.util.MovementUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
-
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Sprint extends Module {
 

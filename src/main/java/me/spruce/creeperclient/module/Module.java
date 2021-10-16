@@ -24,7 +24,7 @@ public class Module {
 
     public static Minecraft mc = Minecraft.getMinecraft();
 
-    public Module(String name, String description, int key, Category c){
+    public Module(String name, String description, int key, Category c) {
         this.name = name;
         this.description = description;
         this.key = key;
@@ -38,33 +38,27 @@ public class Module {
         this.settings.sort(Comparator.comparingInt(s -> s == keyCode ? 1 : 0));
     }
 
-    public void onEnable(){
+    public void onEnable() {
         Client.EVENT_BUS.subscribe(this);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    public void onDisable(){
+    public void onDisable() {
         Client.EVENT_BUS.unsubscribe(this);
         MinecraftForge.EVENT_BUS.unregister(this);
     }
 
-    public void update(){
+    public void update() {}
 
-    }
+    public void render() {}
 
-    public void render(){
+    public void renderText() {}
 
-    }
-
-    public void renderText(){
-
-    }
-
-    public void toggle(){
+    public void toggle() {
         toggled = !toggled;
-        if(toggled){
+        if (toggled) {
             onEnable();
-        }else{
+        } else {
             onDisable();
         }
     }
@@ -109,12 +103,14 @@ public class Module {
         this.toggled = toggled;
     }
 
-    public List<Setting> getSettings() { return settings;}
+    public List<Setting> getSettings() {
+        return settings;
+    }
 
     public static ArrayList<Module> getModulesByCategory(Category cat) {
         ArrayList<Module> mods = new ArrayList<Module>();
-        for(Module m : Client.moduleManager.getModules()) {
-            if(m.getCategory() == cat) {
+        for (Module m : ModuleManager.getModules()) {
+            if (m.getCategory() == cat) {
                 mods.add(m);
             }
         }
