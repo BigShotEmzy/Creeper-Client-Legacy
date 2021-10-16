@@ -9,6 +9,8 @@ import java.awt.*;
 
 public class Watermark extends Module {
 
+    public String text = "Creeper Client";
+
     public Watermark() {
         super("Watermark", "Dislpays the clients watermark.", Keyboard.KEY_NONE, Category.HUD);
         toggled = true;
@@ -16,6 +18,6 @@ public class Watermark extends Module {
 
     @Override
     public void renderText() {
-        FontUtil.normal.drawString("Creeper Client", 6, 6, new Color(140, 34, 239, 255).getRGB());
+        FontUtil.normal.drawString(text, 6, 6, new Color(140, 34, 239, 255).getRGB());
     }
 }

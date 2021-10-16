@@ -23,6 +23,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class ModuleManager {
 
     public static CopyOnWriteArrayList<Module> modules;
+    private static final Watermark watermark = new Watermark();
 
     public ModuleManager(){
         modules = new CopyOnWriteArrayList<>();
@@ -43,13 +44,17 @@ public class ModuleManager {
         modules.add(new NoWeather());
 
         // HUD
-        modules.add(new Watermark());
+        modules.add(watermark);
         modules.add(new Arraylist());
         modules.add(new ClickGUI());
     }
 
     public static CopyOnWriteArrayList<Module> getModules() {
         return modules;
+    }
+
+    public static Watermark getWatermark() {
+        return watermark;
     }
 
     @SubscribeEvent

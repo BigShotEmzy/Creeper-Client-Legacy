@@ -1,6 +1,7 @@
 package me.spruce.creeperclient;
 /**/
 
+import me.spruce.creeperclient.command.CommandManager;
 import me.spruce.creeperclient.module.ModuleManager;
 import me.spruce.creeperclient.util.font.FontUtil;
 import me.zero.alpine.EventManager;
@@ -23,6 +24,7 @@ public class Client {
     public static final String version = "0.1-beta5";
 
     public static ModuleManager moduleManager = new ModuleManager();
+    public static CommandManager commandManager = new CommandManager();
 
     @Mod.Instance
     public static Client instance = new Client();
@@ -33,6 +35,7 @@ public class Client {
     public void init(FMLPreInitializationEvent event) throws IOException {
         MinecraftForge.EVENT_BUS.register(instance);
         MinecraftForge.EVENT_BUS.register(moduleManager);
+        MinecraftForge.EVENT_BUS.register(commandManager);
         MinecraftForge.EVENT_BUS.register(this);
         FontUtil.bootstrap();
         firstSetup();
