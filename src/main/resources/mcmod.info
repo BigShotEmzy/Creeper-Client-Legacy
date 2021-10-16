@@ -2,10 +2,10 @@
 {
   "modid": "creeper",
   "name": "CreeperClient",
-  "description": "1.12.2 anarchy client by Spruce#7704",
-  "version": "0.1",
+  "description": "A client owned by TheCreeperGuy#9999\nDeveloped by the epic Cephetir#0001 and Spruce#7704",
+  "version": "0.1-beta5",
   "mcversion": "${mcversion}",
-  "url": "",
+  "url": "https://discord.gg/vMpg9g8wYE",
   "updateUrl": "",
   "authorList": ["Spruce", "Cephetir"],
   "credits": "Spruce#7704 and Cephetir#0001 for programming this client!",

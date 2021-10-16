@@ -20,7 +20,7 @@ import java.net.URLConnection;
 @Mod(modid = "creeper", name = "CreeperClient", version = Client.version)
 public class Client {
 
-    public static final String version = "0.1";
+    public static final String version = "0.1-beta5";
 
     public static ModuleManager moduleManager = new ModuleManager();
 
