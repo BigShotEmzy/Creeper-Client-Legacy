@@ -12,11 +12,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.awt.*;
 
-@Mixin({GuiMainMenu.class})
+@Mixin(GuiMainMenu.class)
 public class MixinGuiMainMenu extends GuiScreen {
 
     @Inject(method = "drawScreen", at = @At("TAIL"))
-    public void drawText(CallbackInfo ci){
+    public void drawScreen(CallbackInfo ci) {
         FontUtil.normal.drawStringWithShadow("Creeper Client " + Client.version, 20, 6, new Color(140, 34, 239, 255).getRGB());
         //mc.getTextureManager().bindTexture(new ResourceLocation("creeper/creeper_client.png"));
         mc.getTextureManager().bindTexture(new ResourceLocation("creeper/logo.png"));

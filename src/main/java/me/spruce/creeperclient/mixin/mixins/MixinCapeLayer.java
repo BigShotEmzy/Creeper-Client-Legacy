@@ -15,8 +15,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.io.IOException;
-
 @Mixin(LayerCape.class)
 public abstract class MixinCapeLayer {
     @Shadow
@@ -24,7 +22,7 @@ public abstract class MixinCapeLayer {
     private RenderPlayer playerRenderer;
 
     @Inject(method = "doRenderLayer*", at = @At("TAIL"), cancellable = true)
-    public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, CallbackInfo ci) throws IOException {
+    public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, CallbackInfo ci) {
         Module module1 = ModuleManager.modules.stream().filter(module -> module.name.equals("Cape")).findFirst().orElse(null);
         String uuid = player.getGameProfile().getId().toString();
 
