@@ -1,6 +1,6 @@
 package me.spruce.creeperclient.setting;
 
-public class NumberSetting extends Setting {
+public class NumberSetting extends SettingOld {
 	
 	public double value, minimum, maximum, increment;
 

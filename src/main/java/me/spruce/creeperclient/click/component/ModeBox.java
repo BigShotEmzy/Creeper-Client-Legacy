@@ -1,7 +1,7 @@
 package me.spruce.creeperclient.click.component;
 
 import me.spruce.creeperclient.click.Button;
-import me.spruce.creeperclient.setting.ModeSetting;
+import me.spruce.creeperclient.setting.n.Setting;
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.gui.Gui;
 
@@ -12,10 +12,10 @@ public class ModeBox {
 
     private int x;
     private int y;
-    private ModeSetting option;
+    private Setting<String> option;
     private Button b;
 
-    public ModeBox(Button parent, ModeSetting s, int x, int y) {
+    public ModeBox(Button parent, Setting s, int x, int y) {
         this.b = parent;
         this.x = x;
         this.y = y;
@@ -29,7 +29,7 @@ public class ModeBox {
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks, int offset) {
         Gui.drawRect(x, y, x + 96, y + 12, new Color(217, 200, 250, 255).getRGB());
-        FontUtil.normal.drawString(option.name + " : " + option.getMode(), x + 1, y + 2.75f, 0);
+        FontUtil.normal.drawString(option.getName() + " : " + option.getValue(), x + 1, y + 2.75f, 0);
     }
 
     public void keyTyped(char typedChar, int keyCode) throws IOException {

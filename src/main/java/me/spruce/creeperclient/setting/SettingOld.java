@@ -1,6 +1,6 @@
 package me.spruce.creeperclient.setting;
 
-public class Setting {
+public class SettingOld {
 	
 	public String name;
 	public boolean focused;

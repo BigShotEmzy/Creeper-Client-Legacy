@@ -1,6 +1,6 @@
 package me.spruce.creeperclient.setting;
 
-public class BooleanSetting extends Setting {
+public class BooleanSetting extends SettingOld {
 	
 	public boolean enabled;
 

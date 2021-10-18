@@ -4,10 +4,7 @@ import me.spruce.creeperclient.click.component.CheckBox;
 import me.spruce.creeperclient.click.component.ModeBox;
 import me.spruce.creeperclient.click.component.NumberBox;
 import me.spruce.creeperclient.module.Module;
-import me.spruce.creeperclient.setting.BooleanSetting;
-import me.spruce.creeperclient.setting.ModeSetting;
-import me.spruce.creeperclient.setting.NumberSetting;
-import me.spruce.creeperclient.setting.Setting;
+import me.spruce.creeperclient.setting.n.Setting;
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -34,15 +31,11 @@ public class Button {
         this.parent = parent;
         this.module = module;
 
-        for (Setting s : module.settings) {
-            if (s instanceof BooleanSetting) {
-                checkBoxSettings.add(new CheckBox(this, (BooleanSetting) s, parent.x, parent.y + offset + 12));
-            }
-            if(s instanceof ModeSetting) {
-                modeBoxSettings.add(new ModeBox(this, (ModeSetting) s, parent.x, parent.y + offset + 12));
-            }
-            if(s instanceof NumberSetting) {
-                numberBoxSettings.add(new NumberBox(this, (NumberSetting) s, parent.x, parent.y + offset + 12));
+        for (Setting<?> s : Module.settingManager.getSettings(module)) {
+            switch (s.getType()) {
+                case "Boolean": {checkBoxSettings.add(new CheckBox(this, s, parent.x, parent.y + offset + 12)); break;}
+                case "String" : {modeBoxSettings.add(new ModeBox(this, s, parent.x, parent.y + offset + 12)); break;}
+                case "Double" : {numberBoxSettings.add(new NumberBox(this, s, parent.x, parent.y + offset + 12)); break;}
             }
         }
     }
@@ -80,9 +73,9 @@ public class Button {
         int rectY2Offset = parent.y + offset + parent.barheight;
         int fontYOffset = parent.y + offset + 3;
 
-        int color = module.toggled ? new Color(205, 148, 255, 203).getRGB() : new Color(171, 86, 255, 203).getRGB();
+        int color = module.toggled ? new Color(167, 73, 255, 200).getRGB() : new Color(75, 67, 87, 200).getRGB();
         Gui.drawRect(parent.x, rectY1Offset, parent.x + parent.width, rectY2Offset, color);
-        FontUtil.normal.drawString(module.getName(), parent.x + 2, fontYOffset, module.toggled ? new Color(42, 42, 42, 255).getRGB() : -1);
+        FontUtil.normal.drawString(module.getName(), parent.x + 2, fontYOffset, !module.toggled ? new Color(56, 56, 56, 255).getRGB() : -1);
 
         if(settingsOpen) {
             Gui.drawRect(parent.x, rectY1Offset + parent.barheight, parent.x + parent.width, rectY2Offset + settingOffset, color);

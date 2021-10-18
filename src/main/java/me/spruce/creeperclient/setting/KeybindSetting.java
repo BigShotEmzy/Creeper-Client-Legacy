@@ -1,6 +1,6 @@
 package me.spruce.creeperclient.setting;
 
-public class KeybindSetting extends Setting {
+public class KeybindSetting extends SettingOld {
 	
 	public int code;
 	

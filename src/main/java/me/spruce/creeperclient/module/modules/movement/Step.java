@@ -2,7 +2,6 @@ package me.spruce.creeperclient.module.modules.movement;
 
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
-import me.spruce.creeperclient.setting.NumberSetting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.play.client.CPacketPlayer;
 import net.minecraft.util.math.AxisAlignedBB;

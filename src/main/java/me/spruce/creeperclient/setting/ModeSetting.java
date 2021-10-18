@@ -3,7 +3,7 @@ package me.spruce.creeperclient.setting;
 import java.util.Arrays;
 import java.util.List;
 
-public class ModeSetting extends Setting {
+public class ModeSetting extends SettingOld {
 	
 	public int index;
 	public List<String> modes;
@@ -15,7 +15,7 @@ public class ModeSetting extends Setting {
 		index = this.modes.indexOf(defaultMode);
 		this.selected = modes.get(index);
 	}
-	
+
 	public String getMode() {
 		return modes.get(index);
 	}

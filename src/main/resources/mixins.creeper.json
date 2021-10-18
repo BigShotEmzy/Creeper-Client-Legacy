@@ -5,8 +5,10 @@
   "package": "me.spruce.creeperclient.mixin.mixins",
   "refmap": "mixins.creeper.refmap.json",
   "mixins": [
+    "MixinCapeLayer",
     "MixinGuiMainMenu",
-    "MixinCapeLayer"
+    "MixinMinecraftClient"
   ],
-  "client": []
+  "client": [
+  ]
 }

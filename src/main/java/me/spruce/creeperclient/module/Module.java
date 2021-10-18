@@ -1,13 +1,13 @@
 package me.spruce.creeperclient.module;
 
 import me.spruce.creeperclient.setting.KeybindSetting;
-import me.spruce.creeperclient.setting.Setting;
+import me.spruce.creeperclient.setting.n.Setting;
+import me.spruce.creeperclient.setting.n.SettingManager;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.MinecraftForge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public class Module {
@@ -19,7 +19,6 @@ public class Module {
     public boolean toggled;
 
     public KeybindSetting keyCode = new KeybindSetting(0);
-    public List<Setting> settings = new ArrayList<Setting>();
 
     public static Minecraft mc = Minecraft.getMinecraft();
 
@@ -29,12 +28,6 @@ public class Module {
         this.key = key;
         this.category = c;
         this.keyCode.code = key;
-        addSettings(keyCode);
-    }
-
-    public void addSettings(Setting... settings) {
-        this.settings.addAll(Arrays.asList(settings));
-        this.settings.sort(Comparator.comparingInt(s -> s == keyCode ? 1 : 0));
     }
 
     public void onEnable() {
@@ -102,9 +95,6 @@ public class Module {
         this.toggled = toggled;
     }
 
-    public List<Setting> getSettings() {
-        return settings;
-    }
 
     public static ArrayList<Module> getModulesByCategory(Category cat) {
         ArrayList<Module> mods = new ArrayList<Module>();
@@ -114,5 +104,35 @@ public class Module {
             }
         }
         return mods;
+    }
+
+    public static SettingManager settingManager = new SettingManager();
+    //	Integer
+    protected Setting<Number> register(String name, double value, double min, double max, double inc) {
+        Setting<Number> s = new Setting<>(name, this, value, min, max, inc);
+        settingManager.add(s);
+        return s;
+    }
+
+    //	Boolean
+    protected Setting<Boolean> register(String name, boolean value) {
+        Setting<Boolean> s = new Setting<>(name, this, value);
+        settingManager.add(s);
+        return s;
+    }
+
+    //	String
+    protected Setting<String> register(String name, List<String> modes, String value) {
+        Setting<String> s = new Setting<>(name, this, modes, value);
+        settingManager.add(s);
+        return s;
+    }
+
+    //  Group
+    protected Setting<Boolean> register(String name, boolean canBeToggled, Setting<?> toToggle, Setting<?>... settings) {
+        Setting<Boolean> s = new Setting<>(name, this, canBeToggled, toToggle, Arrays.asList(settings));
+        s.asGroup();
+        settingManager.add(s);
+        return s;
     }
 }

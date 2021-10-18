@@ -1,20 +1,19 @@
 package me.spruce.creeperclient.click.component;
 
 import me.spruce.creeperclient.click.Button;
-import me.spruce.creeperclient.setting.NumberSetting;
+import me.spruce.creeperclient.setting.n.Setting;
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class NumberBox {
     private int x;
     private int y;
-    private NumberSetting option;
+    private Setting<Number> option;
     private Button b;
 
-    public NumberBox(Button parent, NumberSetting s, int x, int y) {
+    public NumberBox(Button parent, Setting s, int x, int y) {
         this.b = parent;
         this.x = x;
         this.y = y;
@@ -35,22 +34,22 @@ public class NumberBox {
         Gui.drawRect(x + 73, y + 1, x + 82, y + 10, new Color(50, 50, 50, 255).getRGB());
         FontUtil.normal.drawString("-", x + 74, y + 2, -1);
 
-        FontUtil.normal.drawString(option.name + " : " + option.getValue(), x + 1, y + 2.75f, 0);
+        FontUtil.normal.drawString(option.getName() + " : " + option.getValue().doubleValue(), x + 1, y + 2.75f, 0);
         //FontUtil.normal.drawString("" + option.getValue(), x + 64 - FontUtil.normal.getStringWidth("" + option.getValue()), y + 1, 0x000000);
     }
 
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyTyped(char typedChar, int keyCode) {
     }
 
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (boundingPlus(mouseX, mouseY)) {
-            if (option.value <= option.maximum) {
-                option.setValue(option.value + option.increment);
+            if (option.getValue().doubleValue() <= option.getMax().doubleValue()) {
+                option.setValue(option.getValue().doubleValue() + option.getInc());
             }
         }
         if (boundingMinus(mouseX, mouseY)) {
-            if (option.value >= option.minimum) {
-                option.setValue(option.value - option.increment);
+            if (option.getValue().doubleValue() >= option.getMin().doubleValue()) {
+                option.setValue(option.getValue().doubleValue() - option.getInc());
             }
         }
     }

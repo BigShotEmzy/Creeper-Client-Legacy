@@ -2,7 +2,7 @@ package me.spruce.creeperclient.module.modules.render;
 
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
-import me.spruce.creeperclient.setting.BooleanSetting;
+import me.spruce.creeperclient.setting.n.Setting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderGlobal;
@@ -22,13 +22,12 @@ public class ChestESP extends Module {
 
     private static Minecraft mc = Minecraft.getMinecraft();
 
-    public BooleanSetting chests = new BooleanSetting("Chests", true);
-    public BooleanSetting enderChests = new BooleanSetting("Ender Chests", true);
-    public BooleanSetting shulkers = new BooleanSetting("Shulkers", true);
+    public Setting<Boolean> chests = register("Chests", true);
+    public Setting<Boolean> enderChests = register("Ender Chests", true);
+    public Setting<Boolean> shulkers = register("Shulkers", true);
 
     public ChestESP() {
         super("StorageESP", "Highlights all chests and shulkers in render distance.", Keyboard.KEY_NONE, Category.RENDER);
-        addSettings(chests, enderChests, shulkers);
     }
 
     public final List<StorageBlockPos> Storages = new ArrayList<>();
@@ -40,11 +39,11 @@ public class ChestESP extends Module {
 
         mc.world.loadedTileEntityList.forEach(p_Tile ->
         {
-            if (p_Tile instanceof TileEntityEnderChest && enderChests.enabled)
+            if (p_Tile instanceof TileEntityEnderChest && enderChests.getValue())
                 Storages.add(new StorageBlockPos(p_Tile.getPos().getX(), p_Tile.getPos().getY(), p_Tile.getPos().getZ(), StorageType.Ender));
-            else if (p_Tile instanceof TileEntityChest && chests.enabled)
+            else if (p_Tile instanceof TileEntityChest && chests.getValue())
                 Storages.add(new StorageBlockPos(p_Tile.getPos().getX(), p_Tile.getPos().getY(), p_Tile.getPos().getZ(), StorageType.Chest));
-            else if (p_Tile instanceof TileEntityShulkerBox && shulkers.enabled)
+            else if (p_Tile instanceof TileEntityShulkerBox && shulkers.getValue())
                 Storages.add(new StorageBlockPos(p_Tile.getPos().getX(), p_Tile.getPos().getY(), p_Tile.getPos().getZ(), StorageType.Shulker));
         });
     }

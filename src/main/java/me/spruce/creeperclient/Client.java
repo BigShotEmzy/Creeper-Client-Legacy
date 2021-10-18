@@ -2,6 +2,7 @@ package me.spruce.creeperclient;
 /**/
 
 import me.spruce.creeperclient.command.CommandManager;
+import me.spruce.creeperclient.config.Config;
 import me.spruce.creeperclient.module.ModuleManager;
 import me.spruce.creeperclient.util.font.FontUtil;
 import me.zero.alpine.EventManager;
@@ -22,8 +23,9 @@ public class Client {
 
     public static final String version = "0.1-beta5";
 
-    public static ModuleManager moduleManager = new ModuleManager();
-    public static CommandManager commandManager = new CommandManager();
+    public static final ModuleManager moduleManager = new ModuleManager();
+    public static final CommandManager commandManager = new CommandManager();
+    public static Config config;
 
     @Mod.Instance
     public static Client instance = new Client();
@@ -35,14 +37,13 @@ public class Client {
         MinecraftForge.EVENT_BUS.register(instance);
         MinecraftForge.EVENT_BUS.register(moduleManager);
         MinecraftForge.EVENT_BUS.register(commandManager);
-        MinecraftForge.EVENT_BUS.register(this);
+        config = new Config(event.getModConfigurationDirectory());
+        config.load();
         FontUtil.bootstrap();
         firstSetup();
     }
 
     private int ticks = 0;
-    URL l_URL = null;
-    URLConnection l_Connection = null;
     public BufferedReader l_Reader = null;
 
     @SubscribeEvent
@@ -53,6 +54,9 @@ public class Client {
 
         new Thread(() -> {
             try {
+                URL l_URL;
+                URLConnection l_Connection;
+
                 l_URL = new URL("https://raw.githubusercontent.com/DaCreeperGuy/Creeper-Client/Main/data.txt");
                 l_Connection = l_URL.openConnection();
                 l_Connection.setRequestProperty("User-Agent",
@@ -66,6 +70,9 @@ public class Client {
     }
 
     private void firstSetup() throws IOException {
+        URL l_URL;
+        URLConnection l_Connection;
+
         l_URL = new URL("https://raw.githubusercontent.com/DaCreeperGuy/Creeper-Client/Main/data.txt");
         l_Connection = l_URL.openConnection();
         l_Connection.setRequestProperty("User-Agent",
