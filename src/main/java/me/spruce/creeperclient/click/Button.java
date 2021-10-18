@@ -75,7 +75,7 @@ public class Button {
 
         int color = module.toggled ? new Color(167, 73, 255, 200).getRGB() : new Color(75, 67, 87, 200).getRGB();
         Gui.drawRect(parent.x, rectY1Offset, parent.x + parent.width, rectY2Offset, color);
-        FontUtil.normal.drawString(module.getName(), parent.x + 2, fontYOffset, !module.toggled ? new Color(56, 56, 56, 255).getRGB() : -1);
+        FontUtil.normal.drawString(module.getName(), parent.x + 2, fontYOffset, -1);
 
         if(settingsOpen) {
             Gui.drawRect(parent.x, rectY1Offset + parent.barheight, parent.x + parent.width, rectY2Offset + settingOffset, color);

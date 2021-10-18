@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.util.Map;
 
+@SuppressWarnings("all")
 public class Config {
     File file;
 
@@ -146,12 +147,15 @@ public class Config {
         switch (setting.getType()) {
             case "Boolean": {
                 ((Setting<Boolean>) setting).setValue(element.getAsBoolean());
+                break;
             }
             case "Double": {
                 ((Setting<Number>) setting).setValue(element.getAsDouble());
+                break;
             }
             case "String": {
                 ((Setting<String>) setting).setValue(element.getAsString());
+                break;
             }
         }
     }
