@@ -24,6 +24,7 @@ public class ModuleManager {
 
     public static CopyOnWriteArrayList<Module> modules;
     private static final Watermark watermark = new Watermark();
+    private static final Cape cape = new Cape();
 
     public ModuleManager() {
         modules = new CopyOnWriteArrayList<>();
@@ -38,7 +39,7 @@ public class ModuleManager {
         // RENDER
         modules.add(new Fullbright());
         modules.add(new ChestESP());
-        modules.add(new Cape());
+        modules.add(cape);
 
         // WORLD
         modules.add(new NoWeather());
@@ -55,6 +56,10 @@ public class ModuleManager {
 
     public static Watermark getWatermark() {
         return watermark;
+    }
+
+    public static Cape getCape() {
+        return cape;
     }
 
     @SubscribeEvent

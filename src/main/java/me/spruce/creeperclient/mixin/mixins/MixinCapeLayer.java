@@ -1,7 +1,6 @@
 package me.spruce.creeperclient.mixin.mixins;
 
 import me.spruce.creeperclient.Client;
-import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.module.ModuleManager;
 import me.spruce.creeperclient.util.RenderUtils;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -23,20 +22,18 @@ public abstract class MixinCapeLayer {
 
     @Inject(method = "doRenderLayer*", at = @At("TAIL"), cancellable = true)
     public void doRenderLayer(AbstractClientPlayer player, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch, float scale, CallbackInfo ci) {
-        Module module1 = ModuleManager.modules.stream().filter(module -> module.name.equals("Cape")).findFirst().orElse(null);
         String uuid = player.getGameProfile().getId().toString();
 
-        assert module1 != null;
-        if (module1.isToggled()) {
+        if (ModuleManager.getCape().isToggled()) {
             String user =
             Client.instance.l_Reader.lines().filter(s -> {
                 String[] ss = s.split(":");
                 return ss[0].equals(uuid);
             }).findFirst().orElse("NOTHING");
             if (user.equals("NOTHING")) return;
+            ci.cancel();
             String cape = user.split(":")[1];
-            if (RenderUtils.renderCape(playerRenderer, player, new ResourceLocation("creeper/capes/" + cape.toLowerCase() + ".png"), partialTicks))
-                ci.cancel();
+            RenderUtils.renderCape(playerRenderer, player, new ResourceLocation("creeper/capes/" + cape.toLowerCase() + ".png"), partialTicks);
         }
     }
 }
