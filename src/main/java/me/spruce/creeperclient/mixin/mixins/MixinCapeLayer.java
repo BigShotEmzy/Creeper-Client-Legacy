@@ -26,7 +26,6 @@ public abstract class MixinCapeLayer {
         Module module1 = ModuleManager.modules.stream().filter(module -> module.name.equals("Cape")).findFirst().orElse(null);
         String uuid = player.getGameProfile().getId().toString();
 
-
         assert module1 != null;
         if (module1.isToggled()) {
             String user =

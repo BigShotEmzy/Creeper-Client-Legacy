@@ -25,7 +25,7 @@ public class ModuleManager {
     public static CopyOnWriteArrayList<Module> modules;
     private static final Watermark watermark = new Watermark();
 
-    public ModuleManager(){
+    public ModuleManager() {
         modules = new CopyOnWriteArrayList<>();
 
         // COMBAT
@@ -58,10 +58,10 @@ public class ModuleManager {
     }
 
     @SubscribeEvent
-    public void onKey(InputEvent.KeyInputEvent event){
-        if(Keyboard.getEventKeyState()){
-            for(Module m : modules){
-                if(m.getKey() == Keyboard.getEventKey()){
+    public void onKey(InputEvent.KeyInputEvent event) {
+        if (Keyboard.getEventKeyState()) {
+            for (Module m : modules) {
+                if (m.getKey() == Keyboard.getEventKey()) {
                     m.toggle();
                 }
             }
@@ -69,8 +69,8 @@ public class ModuleManager {
     }
 
     @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event){
-        if(Minecraft.getMinecraft().world != null) {
+    public void onTick(TickEvent.ClientTickEvent event) {
+        if (Minecraft.getMinecraft().world != null) {
             for (Module m : modules) {
                 if (m.toggled) {
                     m.update();
@@ -80,8 +80,8 @@ public class ModuleManager {
     }
 
     @SubscribeEvent
-    public void render(RenderWorldLastEvent event){
-        if(Minecraft.getMinecraft().world != null) {
+    public void render(RenderWorldLastEvent event) {
+        if (Minecraft.getMinecraft().world != null) {
             for (Module m : modules) {
                 if (m.toggled) {
                     m.render();
@@ -91,9 +91,9 @@ public class ModuleManager {
     }
 
     @SubscribeEvent
-    public void onRenderOverlay(RenderGameOverlayEvent.Text event){
-        for(Module m : modules){
-            if(m.toggled){
+    public void onRenderOverlay(RenderGameOverlayEvent.Text event) {
+        for (Module m : modules) {
+            if (m.toggled) {
                 m.renderText();
             }
         }

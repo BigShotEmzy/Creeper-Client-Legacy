@@ -32,7 +32,7 @@ public class ChestESP extends Module {
     }
 
     public final List<StorageBlockPos> Storages = new ArrayList<>();
-    private ICamera camera = new Frustum();
+    private final ICamera camera = new Frustum();
 
     @Override
     public void update() {

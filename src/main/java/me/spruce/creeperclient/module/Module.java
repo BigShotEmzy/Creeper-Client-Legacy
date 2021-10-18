@@ -1,6 +1,5 @@
 package me.spruce.creeperclient.module;
 
-import me.spruce.creeperclient.Client;
 import me.spruce.creeperclient.setting.KeybindSetting;
 import me.spruce.creeperclient.setting.Setting;
 import net.minecraft.client.Minecraft;
@@ -39,12 +38,12 @@ public class Module {
     }
 
     public void onEnable() {
-        Client.EVENT_BUS.subscribe(this);
+        //Client.EVENT_BUS.subscribe(this);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     public void onDisable() {
-        Client.EVENT_BUS.unsubscribe(this);
+        //Client.EVENT_BUS.unsubscribe(this);
         MinecraftForge.EVENT_BUS.unregister(this);
     }
 
