@@ -1,6 +1,7 @@
 package me.spruce.creeperclient.config;
 
 import com.google.gson.*;
+import me.spruce.creeperclient.Client;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.module.ModuleManager;
@@ -33,6 +34,18 @@ public class Config {
                 writer.write(json);
                 writer.close();
             }
+
+            if (!(output = new File(file + "/" + "prefix" + ".json")).exists()) {
+                file.mkdirs();
+                output.createNewFile();
+            }
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(output.toPath())));
+
+            JsonObject object = new JsonObject();
+            object.add("prefix", new JsonPrimitive(Client.commandManager.prefix));
+            String json = gson.toJson(object);
+            writer.write(json);
+            writer.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,6 +79,10 @@ public class Config {
             //object.add("y", new JsonPrimitive());
         }
 
+        if (module.getName().equals("Watermark")) {
+            object.add("text", new JsonPrimitive(ModuleManager.getWatermark().text));
+        }
+
         object.add("enabled", new JsonPrimitive(module.isToggled()));
         object.add("bind", new JsonPrimitive(module.getKey()));
         return object;
@@ -84,7 +101,17 @@ public class Config {
             File settings = new File(file + "/" + m.getName() + ".json");
             InputStream stream = Files.newInputStream(settings.toPath());
             loadSettingsFromFile(new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject(), m);
+            stream.close();
         }
+
+        File settings = new File(file + "/" + "prefix" + ".json");
+        InputStream stream = Files.newInputStream(settings.toPath());
+        for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
+            if(entry.getKey().equals("prefix")) {
+                Client.commandManager.prefix = entry.getValue().getAsString();
+            }
+        }
+        stream.close();
     }
 
     private void loadSettingsFromFile(JsonObject data, Module module) {
@@ -92,12 +119,16 @@ public class Config {
             String settingName = entry.getKey();
             JsonElement value = entry.getValue();
 
-            if (settingName.equals("enabled")) {
-                module.setToggled(value.getAsBoolean());
-            }
-
-            if (settingName.equals("bind")) {
-                module.setKey(value.getAsInt());
+            switch (settingName) {
+                case "enabled":
+                    module.setToggled(value.getAsBoolean());
+                    break;
+                case "bind":
+                    module.setKey(value.getAsInt());
+                    break;
+                case "text":
+                    ModuleManager.getWatermark().text = value.getAsString();
+                    break;
             }
 
             if (module.getCategory().equals(Category.HUD)) {
