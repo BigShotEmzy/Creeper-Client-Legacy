@@ -17,6 +17,9 @@ public class FontUtil {
     //size 40 font
     public static MinecraftFontRenderer normal40;
     private static Font normal40_;
+    //size 20 font
+    public static MinecraftFontRenderer normal20;
+    private static Font normal20_;
 
     private static Font getFont(Map<String, Font> locationMap, String location, int size) {
         Font font = null;
@@ -50,6 +53,7 @@ public class FontUtil {
             Map<String, Font> locationMap = new HashMap<>();
             normal_ = getFont(locationMap, "font.ttf", 19);
             normal40_ = getFont(locationMap, "font.ttf", 40);
+            normal20_ = getFont(locationMap, "font.ttf", 20);
             completed++;
         }).start();
         new Thread(() ->
@@ -74,5 +78,6 @@ public class FontUtil {
 
         normal = new MinecraftFontRenderer(normal_, true, true);
         normal40 = new MinecraftFontRenderer(normal40_, true, true);
+        normal20 = new MinecraftFontRenderer(normal20_, true, true);
     }
 }

@@ -1,12 +1,11 @@
-package me.spruce.creeperclient.click.component;
+package me.spruce.creeperclient.gui.click.component;
 
-import me.spruce.creeperclient.click.Button;
+import me.spruce.creeperclient.gui.click.Button;
 import me.spruce.creeperclient.setting.n.Setting;
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.gui.Gui;
 
 import java.awt.*;
-import java.io.IOException;
 
 public class ModeBox {
 
@@ -32,10 +31,10 @@ public class ModeBox {
         FontUtil.normal.drawString(option.getName() + " : " + option.getValue(), x + 1, y + 2.75f, 0);
     }
 
-    public void keyTyped(char typedChar, int keyCode) throws IOException {
+    public void keyTyped(char typedChar, int keyCode) {
     }
 
-    public void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
+    public void mouseClicked(int mouseX, int mouseY, int mouseButton) {
         if (bounding(mouseX, mouseY)) {
             if (mouseButton == 0) {
                 option.cycle();
@@ -47,6 +46,6 @@ public class ModeBox {
     }
 
     public boolean bounding(int mouseX, int mouseY) {
-        return mouseX >= x && mouseY >= y && mouseX <= x + 96 && mouseY <= y + 15;
+        return mouseX >= x && mouseY >= y && mouseX <= x + 96 && mouseY <= y + 12;
     }
 }

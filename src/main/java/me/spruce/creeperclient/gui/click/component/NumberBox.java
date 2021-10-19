@@ -1,6 +1,6 @@
-package me.spruce.creeperclient.click.component;
+package me.spruce.creeperclient.gui.click.component;
 
-import me.spruce.creeperclient.click.Button;
+import me.spruce.creeperclient.gui.click.Button;
 import me.spruce.creeperclient.setting.n.Setting;
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.gui.Gui;
@@ -58,18 +58,10 @@ public class NumberBox {
     }
 
     public boolean boundingPlus(int mouseX, int mouseY) {
-        if (mouseX >= x + 84 && mouseY >= y + 1 && mouseX <= x + 94 && mouseY <= y + 12) {
-            return true;
-        } else {
-            return false;
-        }
+        return mouseX >= x + 84 && mouseY >= y + 1 && mouseX <= x + 93 && mouseY <= y + 10;
     }
 
     public boolean boundingMinus(int mouseX, int mouseY) {
-        if (mouseX >= x + 74 && mouseY >= y + 1 && mouseX <= x + 84 && mouseY <= y + 12) {
-            return true;
-        } else {
-            return false;
-        }
+        return mouseX >= x + 73 && mouseY >= y + 1 && mouseX <= x + 82 && mouseY <= y + 10;
     }
 }

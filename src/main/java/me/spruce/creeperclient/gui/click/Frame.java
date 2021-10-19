@@ -1,4 +1,4 @@
-package me.spruce.creeperclient.click;
+package me.spruce.creeperclient.gui.click;
 
 import me.spruce.creeperclient.util.font.FontUtil;
 import net.minecraft.client.Minecraft;

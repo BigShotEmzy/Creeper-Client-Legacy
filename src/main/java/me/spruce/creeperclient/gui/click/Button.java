@@ -1,8 +1,8 @@
-package me.spruce.creeperclient.click;
+package me.spruce.creeperclient.gui.click;
 
-import me.spruce.creeperclient.click.component.CheckBox;
-import me.spruce.creeperclient.click.component.ModeBox;
-import me.spruce.creeperclient.click.component.NumberBox;
+import me.spruce.creeperclient.gui.click.component.CheckBox;
+import me.spruce.creeperclient.gui.click.component.ModeBox;
+import me.spruce.creeperclient.gui.click.component.NumberBox;
 import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.setting.n.Setting;
 import me.spruce.creeperclient.util.font.FontUtil;

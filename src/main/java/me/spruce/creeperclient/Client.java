@@ -1,11 +1,15 @@
 package me.spruce.creeperclient;
 /**/
 
+import com.mojang.realmsclient.gui.ChatFormatting;
 import me.spruce.creeperclient.command.CommandManager;
 import me.spruce.creeperclient.config.Config;
+import me.spruce.creeperclient.mixin.mixins.IMixinSession;
 import me.spruce.creeperclient.module.ModuleManager;
 import me.spruce.creeperclient.util.font.FontUtil;
 import me.zero.alpine.EventManager;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.Session;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -17,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.HashMap;
+import java.util.Map;
 
 @Mod(modid = "creeper", name = "CreeperClient", version = Client.version)
 public class Client {
@@ -26,6 +32,9 @@ public class Client {
     public static final ModuleManager moduleManager = new ModuleManager();
     public static final CommandManager commandManager = new CommandManager();
     public static Config config;
+    public static final IMixinSession IMC = (IMixinSession) Minecraft.getMinecraft();
+    public static String status = ChatFormatting.YELLOW + "Idle";
+    public static Map<String, Session> savedAlts = new HashMap<>();
 
     @Mod.Instance
     public static Client instance = new Client();

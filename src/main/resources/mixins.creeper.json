@@ -7,7 +7,8 @@
   "mixins": [
     "MixinCapeLayer",
     "MixinGuiMainMenu",
-    "MixinMinecraftClient"
+    "MixinMinecraftClient",
+    "IMixinSession"
   ],
   "client": [
   ]

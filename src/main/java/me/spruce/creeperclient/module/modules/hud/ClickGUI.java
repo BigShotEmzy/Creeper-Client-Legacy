@@ -1,6 +1,6 @@
 package me.spruce.creeperclient.module.modules.hud;
 
-import me.spruce.creeperclient.click.ClickGui;
+import me.spruce.creeperclient.gui.click.ClickGui;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
 import net.minecraft.client.Minecraft;

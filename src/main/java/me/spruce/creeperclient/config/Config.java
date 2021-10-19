@@ -1,13 +1,19 @@
 package me.spruce.creeperclient.config;
 
 import com.google.gson.*;
+import com.mojang.authlib.Agent;
+import com.mojang.authlib.exceptions.AuthenticationException;
+import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import com.mojang.authlib.yggdrasil.YggdrasilUserAuthentication;
 import me.spruce.creeperclient.Client;
 import me.spruce.creeperclient.module.Category;
 import me.spruce.creeperclient.module.Module;
 import me.spruce.creeperclient.module.ModuleManager;
 import me.spruce.creeperclient.setting.n.Setting;
+import net.minecraft.util.Session;
 
 import java.io.*;
+import java.net.Proxy;
 import java.nio.file.Files;
 import java.util.Map;
 
@@ -36,17 +42,8 @@ public class Config {
                 writer.close();
             }
 
-            if (!(output = new File(file + "/" + "prefix" + ".json")).exists()) {
-                file.mkdirs();
-                output.createNewFile();
-            }
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(output.toPath())));
-
-            JsonObject object = new JsonObject();
-            object.add("prefix", new JsonPrimitive(Client.commandManager.prefix));
-            String json = gson.toJson(object);
-            writer.write(json);
-            writer.close();
+            savePrefix();
+            saveAlts();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,6 +86,41 @@ public class Config {
         return object;
     }
 
+    private void savePrefix() throws IOException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        File output;
+        if (!(output = new File(file + "/" + "prefix" + ".json")).exists()) {
+            file.mkdirs();
+            output.createNewFile();
+        }
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(output.toPath())));
+
+        JsonObject object = new JsonObject();
+        object.add("prefix", new JsonPrimitive(Client.commandManager.prefix));
+        String json = gson.toJson(object);
+        writer.write(json);
+        writer.close();
+    }
+
+    private void saveAlts() throws IOException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        File output;
+        if (!(output = new File(file + "/" + "alts" + ".json")).exists()) {
+            file.mkdirs();
+            output.createNewFile();
+        }
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(output.toPath())));
+
+        JsonObject object = new JsonObject();
+        Client.savedAlts.forEach((s, session) -> {
+            String[] ss = s.split(":");
+            object.add(ss[0], new JsonPrimitive(ss[1]));
+        });
+        String json = gson.toJson(object);
+        writer.write(json);
+        writer.close();
+    }
+
     public void load() {
         try {
             loadFromFile();
@@ -105,14 +137,8 @@ public class Config {
             stream.close();
         }
 
-        File settings = new File(file + "/" + "prefix" + ".json");
-        InputStream stream = Files.newInputStream(settings.toPath());
-        for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
-            if(entry.getKey().equals("prefix")) {
-                Client.commandManager.prefix = entry.getValue().getAsString();
-            }
-        }
-        stream.close();
+        loadPrefix();
+        loadAlts();
     }
 
     private void loadSettingsFromFile(JsonObject data, Module module) {
@@ -141,6 +167,36 @@ public class Config {
                 }
             });
         }
+    }
+
+    private void loadPrefix() throws IOException {
+        File settings = new File(file + "/" + "prefix" + ".json");
+        InputStream stream = Files.newInputStream(settings.toPath());
+        for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
+            if(entry.getKey().equals("prefix")) {
+                Client.commandManager.prefix = entry.getValue().getAsString();
+            }
+        }
+        stream.close();
+    }
+
+    private void loadAlts() throws IOException {
+        File settings = new File(file + "/" + "alts" + ".json");
+        InputStream stream = Files.newInputStream(settings.toPath());
+        for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
+            YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
+            try{
+                YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service.createUserAuthentication(Agent.MINECRAFT);
+                auth.setUsername(entry.getKey());
+                auth.setPassword(entry.getValue().getAsString());
+                auth.logIn();
+                Session session = new Session(auth.getSelectedProfile().getName(), auth.getSelectedProfile().getId().toString(), auth.getAuthenticatedToken(), "mojang");
+                Client.savedAlts.put(entry.getKey() + ":" + entry.getValue().getAsString(), session);
+            } catch (AuthenticationException e) {
+                e.printStackTrace();
+            }
+        }
+        stream.close();
     }
 
     private void valueLoader(Setting<?> setting, JsonElement element) {
