@@ -6,7 +6,6 @@ public enum Category {
     MOVEMENT,
     RENDER,
     WORLD,
-    SCRIPTS,
+    EXPLOITS,
     HUD;
-
 }

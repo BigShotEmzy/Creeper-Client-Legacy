@@ -13,8 +13,6 @@ import net.minecraft.util.Session;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,51 +40,38 @@ public class Client {
     public static final EventManager EVENT_BUS = new EventManager();
 
     @Mod.EventHandler
-    public void init(FMLPreInitializationEvent event) throws IOException {
+    public void init(FMLPreInitializationEvent event) {
         MinecraftForge.EVENT_BUS.register(instance);
         MinecraftForge.EVENT_BUS.register(moduleManager);
         MinecraftForge.EVENT_BUS.register(commandManager);
+        startThread();
         config = new Config(event.getModConfigurationDirectory());
         config.load();
         FontUtil.bootstrap();
-        firstSetup();
     }
 
-    private int ticks = 0;
-    public BufferedReader l_Reader = null;
+    private long time = System.currentTimeMillis() + 69420L;
+    public BufferedReader l_Reader;
 
-    @SubscribeEvent
-    public void onTick(TickEvent.ClientTickEvent event) {
-        ticks++;
-        if (ticks < 600) return;
-        ticks = 0;
-
+    public void startThread() {
         new Thread(() -> {
-            try {
-                URL l_URL;
-                URLConnection l_Connection;
+            while (!Thread.interrupted()) {
+                if (System.currentTimeMillis() - time < 6000) return;
+                time = System.currentTimeMillis();
+                try {
+                    URL l_URL;
+                    URLConnection l_Connection;
 
-                l_URL = new URL("https://raw.githubusercontent.com/DaCreeperGuy/Creeper-Client/Main/data.txt");
-                l_Connection = l_URL.openConnection();
-                l_Connection.setRequestProperty("User-Agent",
-                        "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.29 Safari/537.36");
+                    l_URL = new URL("https://raw.githubusercontent.com/DaCreeperGuy/Creeper-Client/Main/data.txt");
+                    l_Connection = l_URL.openConnection();
+                    l_Connection.setRequestProperty("User-Agent",
+                            "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.29 Safari/537.36");
 
-                l_Reader = new BufferedReader(new InputStreamReader(l_Connection.getInputStream()));
-            } catch (IOException e) {
-                e.printStackTrace();
+                    l_Reader = new BufferedReader(new InputStreamReader(l_Connection.getInputStream()));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
-    }
-
-    private void firstSetup() throws IOException {
-        URL l_URL;
-        URLConnection l_Connection;
-
-        l_URL = new URL("https://raw.githubusercontent.com/DaCreeperGuy/Creeper-Client/Main/data.txt");
-        l_Connection = l_URL.openConnection();
-        l_Connection.setRequestProperty("User-Agent",
-                "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.29 Safari/537.36");
-
-        l_Reader = new BufferedReader(new InputStreamReader(l_Connection.getInputStream()));
     }
 }

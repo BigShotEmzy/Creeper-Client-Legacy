@@ -1,6 +1,7 @@
 package me.spruce.creeperclient.module;
 
 import me.spruce.creeperclient.module.modules.combat.FastBow;
+import me.spruce.creeperclient.module.modules.exploits.PearlTracker;
 import me.spruce.creeperclient.module.modules.hud.Arraylist;
 import me.spruce.creeperclient.module.modules.hud.ClickGUI;
 import me.spruce.creeperclient.module.modules.hud.Watermark;
@@ -48,6 +49,9 @@ public class ModuleManager {
         modules.add(watermark);
         modules.add(new Arraylist());
         modules.add(new ClickGUI());
+
+        // EXPLOITS
+        modules.add(new PearlTracker());
     }
 
     public static CopyOnWriteArrayList<Module> getModules() {
