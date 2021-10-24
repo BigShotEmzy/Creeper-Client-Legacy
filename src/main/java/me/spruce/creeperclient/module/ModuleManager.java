@@ -6,6 +6,7 @@ import me.spruce.creeperclient.module.modules.hud.Arraylist;
 import me.spruce.creeperclient.module.modules.hud.ClickGUI;
 import me.spruce.creeperclient.module.modules.hud.Watermark;
 import me.spruce.creeperclient.module.modules.misc.RestartNotifier2b2t;
+import me.spruce.creeperclient.module.modules.movement.InvMove;
 import me.spruce.creeperclient.module.modules.movement.Sprint;
 import me.spruce.creeperclient.module.modules.movement.Step;
 import me.spruce.creeperclient.module.modules.render.Cape;
@@ -27,6 +28,7 @@ public class ModuleManager {
     public static CopyOnWriteArrayList<Module> modules;
     private static final Watermark watermark = new Watermark();
     private static final Cape cape = new Cape();
+    private static final Sprint sprint = new Sprint();
 
     public ModuleManager() {
         modules = new CopyOnWriteArrayList<>();
@@ -35,8 +37,9 @@ public class ModuleManager {
         modules.add(new FastBow());
 
         // MOVEMENT
-        modules.add(new Sprint());
+        modules.add(sprint);
         modules.add(new Step());
+        modules.add(new InvMove());
 
         // RENDER
         modules.add(new Fullbright());
@@ -68,6 +71,10 @@ public class ModuleManager {
 
     public static Cape getCape() {
         return cape;
+    }
+
+    public static Sprint getSprint() {
+        return sprint;
     }
 
     @SubscribeEvent
