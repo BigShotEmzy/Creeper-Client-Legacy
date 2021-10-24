@@ -7,5 +7,6 @@ public enum Category {
     RENDER,
     WORLD,
     EXPLOITS,
-    HUD;
+    HUD,
+    MISC
 }
