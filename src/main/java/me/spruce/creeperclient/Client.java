@@ -4,6 +4,7 @@ package me.spruce.creeperclient;
 import com.mojang.realmsclient.gui.ChatFormatting;
 import me.spruce.creeperclient.command.CommandManager;
 import me.spruce.creeperclient.config.Config;
+import me.spruce.creeperclient.mixin.mixins.IMixinRightClickDelayTimer;
 import me.spruce.creeperclient.mixin.mixins.IMixinSession;
 import me.spruce.creeperclient.module.ModuleManager;
 import me.spruce.creeperclient.util.font.FontUtil;
@@ -31,6 +32,7 @@ public class Client {
     public static final CommandManager commandManager = new CommandManager();
     public static Config config;
     public static final IMixinSession IMC = (IMixinSession) Minecraft.getMinecraft();
+    public static final IMixinRightClickDelayTimer rightClickDelayTimer = (IMixinRightClickDelayTimer) Minecraft.getMinecraft();
     public static String status = ChatFormatting.YELLOW + "Idle";
     public static Map<String, Session> savedAlts = new HashMap<>();
 

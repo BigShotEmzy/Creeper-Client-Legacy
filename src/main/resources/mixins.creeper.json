@@ -5,10 +5,11 @@
   "package": "me.spruce.creeperclient.mixin.mixins",
   "refmap": "mixins.creeper.refmap.json",
   "mixins": [
+    "IMixinSession",
+    "IMixinRightClickDelayTimer",
     "MixinCapeLayer",
     "MixinGuiMainMenu",
-    "MixinMinecraftClient",
-    "IMixinSession"
+    "MixinMinecraftClient"
   ],
   "client": [
   ]

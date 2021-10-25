@@ -122,23 +122,22 @@ public class Config {
     }
 
     public void load() {
-        try {
-            loadFromFile();
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (Module m : ModuleManager.getModules()) {
+            loadFromFile(m);
         }
+        loadPrefix();
+        loadAlts();
     }
 
-    private void loadFromFile() throws IOException {
-        for (Module m : ModuleManager.getModules()) {
+    private void loadFromFile(Module m) {
+        try {
             File settings = new File(file + "/" + m.getName() + ".json");
             InputStream stream = Files.newInputStream(settings.toPath());
             loadSettingsFromFile(new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject(), m);
             stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        loadPrefix();
-        loadAlts();
     }
 
     private void loadSettingsFromFile(JsonObject data, Module module) {
@@ -169,34 +168,42 @@ public class Config {
         }
     }
 
-    private void loadPrefix() throws IOException {
-        File settings = new File(file + "/" + "prefix" + ".json");
-        InputStream stream = Files.newInputStream(settings.toPath());
-        for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
-            if(entry.getKey().equals("prefix")) {
-                Client.commandManager.prefix = entry.getValue().getAsString();
+    private void loadPrefix() {
+        try {
+            File settings = new File(file + "/" + "prefix" + ".json");
+            InputStream stream = Files.newInputStream(settings.toPath());
+            for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
+                if (entry.getKey().equals("prefix")) {
+                    Client.commandManager.prefix = entry.getValue().getAsString();
+                }
             }
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        stream.close();
     }
 
-    private void loadAlts() throws IOException {
-        File settings = new File(file + "/" + "alts" + ".json");
-        InputStream stream = Files.newInputStream(settings.toPath());
-        for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
-            YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
-            try{
-                YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service.createUserAuthentication(Agent.MINECRAFT);
-                auth.setUsername(entry.getKey());
-                auth.setPassword(entry.getValue().getAsString());
-                auth.logIn();
-                Session session = new Session(auth.getSelectedProfile().getName(), auth.getSelectedProfile().getId().toString(), auth.getAuthenticatedToken(), "mojang");
-                Client.savedAlts.put(entry.getKey() + ":" + entry.getValue().getAsString(), session);
-            } catch (AuthenticationException e) {
-                e.printStackTrace();
+    private void loadAlts() {
+        try {
+            File settings = new File(file + "/" + "alts" + ".json");
+            InputStream stream = Files.newInputStream(settings.toPath());
+            for (Map.Entry<String, JsonElement> entry : new JsonParser().parse(new InputStreamReader(stream)).getAsJsonObject().entrySet()) {
+                YggdrasilAuthenticationService service = new YggdrasilAuthenticationService(Proxy.NO_PROXY, "");
+                try {
+                    YggdrasilUserAuthentication auth = (YggdrasilUserAuthentication) service.createUserAuthentication(Agent.MINECRAFT);
+                    auth.setUsername(entry.getKey());
+                    auth.setPassword(entry.getValue().getAsString());
+                    auth.logIn();
+                    Session session = new Session(auth.getSelectedProfile().getName(), auth.getSelectedProfile().getId().toString(), auth.getAuthenticatedToken(), "mojang");
+                    Client.savedAlts.put(entry.getKey() + ":" + entry.getValue().getAsString(), session);
+                } catch (AuthenticationException e) {
+                    e.printStackTrace();
+                }
             }
+            stream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        stream.close();
     }
 
     private void valueLoader(Setting<?> setting, JsonElement element) {

@@ -1,6 +1,8 @@
 package me.spruce.creeperclient.module;
 
 import me.spruce.creeperclient.module.modules.combat.FastBow;
+import me.spruce.creeperclient.module.modules.exploits.DupeItem5b5t;
+import me.spruce.creeperclient.module.modules.exploits.DupeShulker5b5t;
 import me.spruce.creeperclient.module.modules.exploits.PearlTracker;
 import me.spruce.creeperclient.module.modules.hud.Arraylist;
 import me.spruce.creeperclient.module.modules.hud.ClickGUI;
@@ -56,6 +58,8 @@ public class ModuleManager {
 
         // EXPLOITS
         modules.add(new PearlTracker());
+        modules.add(new DupeItem5b5t());
+        modules.add(new DupeShulker5b5t());
 
         // MISC
         modules.add(new RestartNotifier2b2t());
