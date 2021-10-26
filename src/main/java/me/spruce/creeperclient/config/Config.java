@@ -147,7 +147,8 @@ public class Config {
 
             switch (settingName) {
                 case "enabled":
-                    module.setToggled(value.getAsBoolean());
+                    if(value.getAsBoolean()) module.setToggled(value.getAsBoolean());
+                    else module.toggled = value.getAsBoolean();
                     break;
                 case "bind":
                     module.setKey(value.getAsInt());

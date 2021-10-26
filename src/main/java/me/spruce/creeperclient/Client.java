@@ -26,7 +26,7 @@ import java.util.Map;
 @Mod(modid = "creeper", name = "CreeperClient", version = Client.version)
 public class Client {
 
-    public static final String version = "0.1-beta5";
+    public static final String version = "0.1-beta6";
 
     public static final ModuleManager moduleManager = new ModuleManager();
     public static final CommandManager commandManager = new CommandManager();

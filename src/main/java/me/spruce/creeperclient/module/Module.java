@@ -93,6 +93,11 @@ public class Module {
 
     public void setToggled(boolean toggled) {
         this.toggled = toggled;
+        if (toggled) {
+            onEnable();
+        } else {
+            onDisable();
+        }
     }
 
 
