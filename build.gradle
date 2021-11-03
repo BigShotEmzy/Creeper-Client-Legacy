@@ -19,7 +19,7 @@ apply plugin: 'com.github.johnrengelman.shadow'
 //Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
  
  
-version = "0.1-beta6"
+version = "0.1-beta7"
 group = "me.creeper.creeperclient" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "creeperClient"
  

@@ -1,6 +1,8 @@
 package me.spruce.creeperclient.module;
 
+import me.spruce.creeperclient.module.modules.combat.AutoTotem;
 import me.spruce.creeperclient.module.modules.combat.FastBow;
+import me.spruce.creeperclient.module.modules.combat.OffHand;
 import me.spruce.creeperclient.module.modules.exploits.DupeItem5b5t;
 import me.spruce.creeperclient.module.modules.exploits.DupeShulker5b5t;
 import me.spruce.creeperclient.module.modules.exploits.PearlTracker;
@@ -31,12 +33,15 @@ public class ModuleManager {
     private static final Watermark watermark = new Watermark();
     private static final Cape cape = new Cape();
     private static final Sprint sprint = new Sprint();
+    private static final OffHand offHand = new OffHand();
 
     public ModuleManager() {
         modules = new CopyOnWriteArrayList<>();
 
         // COMBAT
         modules.add(new FastBow());
+        modules.add(new AutoTotem());
+        modules.add(offHand);
 
         // MOVEMENT
         modules.add(sprint);
@@ -79,6 +84,10 @@ public class ModuleManager {
 
     public static Sprint getSprint() {
         return sprint;
+    }
+
+    public static OffHand getOffHand() {
+        return offHand;
     }
 
     @SubscribeEvent
