@@ -16,6 +16,7 @@ public class HelpCommand extends Command {
         sendMessage(ChatFormatting.DARK_GREEN + ".help - Show this list.");
         sendMessage(ChatFormatting.DARK_GREEN + ".watermark <text> - Change watermark text.");
         sendMessage(ChatFormatting.DARK_GREEN + ".prefix <text> - Change commands' prefix.");
+        sendMessage(ChatFormatting.DARK_GREEN + ".b <args> - Use baritone.");
         sendMessage(ChatFormatting.DARK_GREEN + "--------------------------------------");
     }
 }

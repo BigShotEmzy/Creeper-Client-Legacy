@@ -1,6 +1,7 @@
 package me.spruce.creeperclient.command;
 
 import com.mojang.realmsclient.gui.ChatFormatting;
+import me.spruce.creeperclient.command.commands.BaritoneCommand;
 import me.spruce.creeperclient.command.commands.HelpCommand;
 import me.spruce.creeperclient.command.commands.PrefixCommand;
 import me.spruce.creeperclient.command.commands.WaterMarkCommand;
@@ -22,6 +23,7 @@ public class CommandManager {
 
         commands.add(new WaterMarkCommand());
         commands.add(new PrefixCommand());
+        commands.add(new BaritoneCommand());
     }
 
     @SubscribeEvent
@@ -38,6 +40,7 @@ public class CommandManager {
             });
             if (!success[0]) {
                 Command.sendMessage(ChatFormatting.DARK_RED + "Invalid input!");
+                new HelpCommand().onCall(event);
             }
         }
     }
