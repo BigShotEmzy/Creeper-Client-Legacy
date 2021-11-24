@@ -45,6 +45,7 @@ repositories {
 	maven { url = "https://jitpack.io" }
 	maven { url = 'https://lukflug.github.io/maven' }
 	maven { url = 'https://impactdevelopment.github.io/maven/' }
+	maven { url = "https://maven.konasclient.com/" }
 	mavenCentral()
 }
 
@@ -73,6 +74,10 @@ dependencies {
 	jarLibs('club.minnced:java-discord-rpc:2.0.1')
 	implementation('com.github.cabaletta:baritone:1.2.14')
 	jarLibs('cabaletta:baritone-api:1.2')
+	jarLibs "us.myles:viaversion:3.3.0-21w06a"
+	jarLibs "nl.matsv:viabackwards-all:3.3.0-21w06a"
+	jarLibs "de.gerrygames:viarewind-core:1.5.3"
+	jarLibs "org.yaml:snakeyaml:1.29"
 
 	implementation configurations.jarLibs
 }
