@@ -1,7 +1,7 @@
 package me.spruce.creeperclient.gui.viaversion;
 
 import com.viaversion.viafabric.ViaFabric;
-import com.viaversion.viafabric.protocol.ProtocolSorter;
+import com.viaversion.viafabric.protocol.ProtocolCollection;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.GlStateManager;
@@ -11,74 +11,55 @@ import net.minecraft.util.math.MathHelper;
  * Skidded from Konas :kekw:
  */
 public class GuiProtocolSlider extends GuiButton {
-    private float sliderValue;
+    public float sliderValue = 1.0f;
     public boolean dragging;
-    private final float minValue;
-    private final float maxValue;
+    public float minValue = 0.0f;
+    public float maxValue = ProtocolCollection.values().length - 1;
 
-    public GuiProtocolSlider(int buttonId, int x, int y, int width, int height) {
-        super(buttonId, x, y, width, height, "Protocol");
-        this.sliderValue = 1.0F;
-        this.minValue = 0;
-        this.maxValue = ProtocolSorter.getProtocolVersions().size() - 1;
-        for (int i = 0; i < ProtocolSorter.getProtocolVersions().size(); i++) {
-            if (ProtocolSorter.getProtocolVersions().get(i).getVersion() == ViaFabric.clientSideVersion) {
-                sliderValue = (float) i / (float) ProtocolSorter.getProtocolVersions().size();
-                this.displayString = "Version: " + ProtocolSorter.getProtocolVersions().get(i).getName();
-            }
+    public GuiProtocolSlider(int n, int n2, int n3, int n4, int n5) {
+        super(n, n2, n3, n4, n5, "Protocol");
+        for (int i = 0; i < ProtocolCollection.values().length; ++i) {
+            if (ProtocolCollection.values()[i].getVersion().getVersion() != ViaFabric.getInstance().getVersion()) continue;
+            this.sliderValue = (float)i / (float)ProtocolCollection.values().length;
+            this.displayString = "Protocol: " + ProtocolCollection.values()[i].getVersion().getName();
         }
     }
 
-    /**
-     * Returns 0 if the button is disabled, 1 if the mouse is NOT hovering over this button and 2 if it IS hovering over
-     * this button.
-     */
-    protected int getHoverState(boolean mouseOver) {
+    public void mouseReleased(int n, int n2) {
+        this.dragging = false;
+    }
+
+    public int getHoverState(boolean bl) {
         return 0;
     }
 
-    /**
-     * Fired when the mouse button is dragged. Equivalent of MouseListener.mouseDragged(MouseEvent e).
-     */
-    protected void mouseDragged(Minecraft mc, int mouseX, int mouseY) {
-        if (this.visible) {
+    public void mouseDragged(Minecraft minecraft, int n, int n2) {
+        block1: {
+            if (!this.visible) break block1;
             if (this.dragging) {
-                this.sliderValue = (float) (mouseX - (this.x + 4)) / (float) (this.width - 8);
-                this.sliderValue = MathHelper.clamp(this.sliderValue, 0.0F, 1.0F);
-                int actualVersion = (int) (sliderValue * maxValue);
-                ViaFabric.clientSideVersion = ProtocolSorter.getProtocolVersions().get(actualVersion).getVersion();
-                this.displayString = "Version: " + ProtocolSorter.getProtocolVersions().get(actualVersion).getName();
+                this.sliderValue = (float)(n - (this.x + 4)) / (float)(this.width - 8);
+                this.sliderValue = MathHelper.clamp((float)this.sliderValue, (float)0.0f, (float)1.0f);
+                int n3 = (int)(this.sliderValue * this.maxValue);
+                ViaFabric.getInstance().setVersion(ProtocolCollection.values()[n3].getVersion().getVersion());
+                this.displayString = "Protocol: " + ProtocolCollection.values()[n3].getVersion().getName();
             }
-
-            mc.getTextureManager().bindTexture(BUTTON_TEXTURES);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.drawTexturedModalRect(this.x + (int) (this.sliderValue * (float) (this.width - 8)), this.y, 0, 66, 4, 20);
-            this.drawTexturedModalRect(this.x + (int) (this.sliderValue * (float) (this.width - 8)) + 4, this.y, 196, 66, 4, 20);
+            minecraft.getTextureManager().bindTexture(BUTTON_TEXTURES);
+            GlStateManager.color((float)1.0f, (float)1.0f, (float)1.0f, (float)1.0f);
+            this.drawTexturedModalRect(this.x + (int)(this.sliderValue * (float)(this.width - 8)), this.y, 0, 66, 4, 20);
+            this.drawTexturedModalRect(this.x + (int)(this.sliderValue * (float)(this.width - 8)) + 4, this.y, 196, 66, 4, 20);
         }
     }
 
-    /**
-     * Returns true if the mouse has been pressed on this control. Equivalent of MouseListener.mousePressed(MouseEvent
-     * e).
-     */
-    public boolean mousePressed(Minecraft mc, int mouseX, int mouseY) {
-        if (super.mousePressed(mc, mouseX, mouseY)) {
-            this.sliderValue = (float) (mouseX - (this.x + 4)) / (float) (this.width - 8);
-            this.sliderValue = MathHelper.clamp(this.sliderValue, 0.0F, 1.0F);
-            int actualVersion = (int) (sliderValue * maxValue);
-            ViaFabric.clientSideVersion = ProtocolSorter.getProtocolVersions().get(actualVersion).getVersion();
-            this.displayString = "Protocol: " + ProtocolSorter.getProtocolVersions().get(actualVersion).getName();
+    public boolean mousePressed(Minecraft minecraft, int n, int n2) {
+        if (super.mousePressed(minecraft, n, n2)) {
+            this.sliderValue = (float)(n - (this.x + 4)) / (float)(this.width - 8);
+            this.sliderValue = MathHelper.clamp((float)this.sliderValue, (float)0.0f, (float)1.0f);
+            int n3 = (int)(this.sliderValue * this.maxValue);
+            ViaFabric.getInstance().setVersion(ProtocolCollection.values()[n3].getVersion().getVersion());
+            this.displayString = "Protocol: " + ProtocolCollection.values()[n3].getVersion().getName();
             this.dragging = true;
             return true;
-        } else {
-            return false;
         }
-    }
-
-    /**
-     * Fired when the mouse button is released. Equivalent of MouseListener.mouseReleased(MouseEvent e).
-     */
-    public void mouseReleased(int mouseX, int mouseY) {
-        this.dragging = false;
+        return false;
     }
 }

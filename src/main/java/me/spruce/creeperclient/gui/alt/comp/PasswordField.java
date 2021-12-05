@@ -1,4 +1,4 @@
-package me.spruce.creeperclient.gui.alt;
+package me.spruce.creeperclient.gui.alt.comp;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;

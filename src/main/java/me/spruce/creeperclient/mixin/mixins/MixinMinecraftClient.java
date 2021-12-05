@@ -9,8 +9,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.io.File;
-
 @Mixin(Minecraft.class)
 public class MixinMinecraftClient {
     @Inject(method = "shutdownMinecraftApplet", at = @At("HEAD"))
@@ -20,10 +18,10 @@ public class MixinMinecraftClient {
 
     @Inject(method = "<init>", at = @At("RETURN"))
     public void injectConstructor(GameConfiguration gameConfiguration, CallbackInfo ci) {
-        if (new File(Minecraft.getMinecraft().gameDir, "novia").exists()) return;
         try {
-            new ViaFabric().onInitialize();
-        } catch (Exception e) {
+            ViaFabric.getInstance().start();
+        }
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
